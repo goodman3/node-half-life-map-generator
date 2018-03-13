@@ -1,0 +1,22 @@
+{
+  "name": "node-half-life-map-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goodman3/node-half-life-map-generator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/goodman3/node-half-life-map-generator/issues"
+  },
+  "homepage": "https://github.com/goodman3/node-half-life-map-generator#readme",
+  "dependencies": {
+    "get-pixels": "^3.3.0"
+  }
+}
