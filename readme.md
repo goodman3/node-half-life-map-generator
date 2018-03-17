@@ -29,4 +29,4 @@ Each pixel's RGB value represents height.
  
  or
  
- index.exe  [path-to-png]
+ hl-png-generator.exe  [path-to-png]
