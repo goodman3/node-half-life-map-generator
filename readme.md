@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This tool converts png file into half-life 1 *.map .
+This tool converts *.png file into half-life 1 *.map .
 
 ## png format
 
@@ -14,11 +14,19 @@ Each pixel's RGB value represents height.
         ┌-------┐   -> R value
         |       |
         |       |
-        └--------   -> G value
+        └-------┘   -> G value
         
         ┌-------┐   -> B value
         |       |
         └-------┘
     ```
  
- * Other combination are reserved.
+ * Other combinations are reserved.
+ 
+ ## usage
+ 
+ node index.js [path-to-png]
+ 
+ or
+ 
+ index.exe  [path-to-png]
