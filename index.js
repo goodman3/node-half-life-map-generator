@@ -36,7 +36,6 @@ class mapGenerator {
                 } else {
                     resolve(pixels)
                 }
-                console.log("got pixels", pixels.shape.slice());
                 // console.log("got pixels", pixels.data);
 
             })
@@ -97,7 +96,6 @@ class mapGenerator {
         return this.coords[name][value];
     }
     updateCoord(){
-        console.log(`updateCoord:`,'start');
         let self = this;
         this.coords = {
             left:{},
@@ -118,7 +116,6 @@ class mapGenerator {
             p(item,'top');
             // p(item,'bottom');
         }
-        console.log(`updateCoord :`,'end');
     }
 
     /**
@@ -166,34 +163,6 @@ class mapGenerator {
                 }
             }
         }
-        // for(let key in this.blocks){
-        //     let item = this.blocks[key];
-        //     if(item.blockType === block.blockType){
-        //         // 1
-        //         if(item.left === block.left && item.right === block.right){
-        //             if(item.bottom === block.top || item.top === block.bottom){
-        //                 if(t>=limit){
-        //                     break;
-        //                 }
-        //                 t++;
-        //                 if(item.size > nearByblock.size)
-        //                     nearByblock = item;
-        //             }
-        //         }
-        //         // 2
-        //         if(item.top === block.top && item.bottom === block.bottom){
-        //             if(item.left === block.right || item.right === block.left){
-        //                 if(t>=limit){
-        //                     break;
-        //                 }
-        //                 t++;
-        //                 if(item.size > nearByblock.size)
-        //                     nearByblock = item;
-        //             }
-        //         }
-        //     }
-        // }
-        // console.log(`nearByblock :`,nearByblock);
         if(nearByblock.myId){
             this.merge(block,nearByblock);
             return true;
@@ -249,7 +218,6 @@ class mapGenerator {
         return new Promise((resolve,reject)=>{
 
             let _mergeAll = ()=>{
-                console.log('staring again!');
                 let merged = false;
                 let count = 0;
                 let hintCount = 0;
@@ -269,7 +237,6 @@ class mapGenerator {
                     }
                 }
                 if(merged){
-                    console.log(`count :`,count);
                     this.updateCoord();
                     _mergeAll();
                 } else {
@@ -281,14 +248,42 @@ class mapGenerator {
     }
 }
 
-// console.log(mapGenerator.getBlockText(0,32,0,128,-32,256,'SKY'));
-let gen =new mapGenerator();
-gen.readPicture(path.join(__dirname, 'level2.png')).then((pixels) => {
-    return gen.getMapFromPixels(pixels);
-}).then(() => {
-    gen.updateCoord();
-    return gen.mergeAll();
-    // fs.writeFileSync(path.join(__dirname, 'sample.map'), data);
-}).then(()=>{
-    fs.writeFileSync(path.join(__dirname, 'sample.map'), gen.makeMap());
+new Promise((resolve,reject)=>{
+    let imagePath;
+    for(let i=0;i<process.argv.length;i++){
+        let item=process.argv[i];
+        if(item.indexOf('.png')>=0){
+            imagePath = item;
+            resolve(imagePath)
+        }
+    }
+    if(!imagePath){
+        process.stdout.write("Please drag your .png file into this window, then press enter.\n");
+        process.stdin.once("data", function (data) {
+            resolve(data.toString().trim())
+        });
+    }
+}).then((imgPath)=>{
+    let gen =new mapGenerator();
+    gen.readPicture(imgPath).then((pixels) => {
+        return gen.getMapFromPixels(pixels);
+    }).then(() => {
+        gen.updateCoord();
+        return gen.mergeAll();
+    }).then(()=>{
+        //path.join(__dirname, 'sample.map')
+        fs.writeFileSync('sample.map', gen.makeMap());
+        process.stdout.write("Map saved to: " + path.join(__dirname, 'sample.map')+'\n');
+        process.stdout.write("Press any key to exit");
+        process.stdin.setRawMode = true;
+        process.stdin.resume();
+        process.stdin.on('data', process.exit.bind(process, 0));
+    }).catch((err)=>{
+
+        process.stdout.write(err);
+        process.stdin.setRawMode = true;
+        process.stdin.resume();
+        process.stdin.on('data', process.exit.bind(process, 0));
+    });
+
 });
