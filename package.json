@@ -1,11 +1,11 @@
 {
   "name": "node-half-life-map-generator",
   "version": "1.0.0",
-  "description": "",
+  "description": "Experimental half-life 1 map generator",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "nexe index.js --no-bundle -o app.exe",
+    "build": "pkg index.js",
     "start": "node index.js"
   },
   "repository": {
